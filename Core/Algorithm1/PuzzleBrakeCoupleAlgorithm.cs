@@ -5,18 +5,19 @@ using System.Text;
 using Utilits;
 using System.Windows.Forms;
 using System.Drawing;
-using Core.FactoryMethod.Algorithm1.AlgorithmAdditionMethods;
+using Core.Algorithm1.AlgorithmAdditionMethods;
+using Core;
 
-namespace Core.FactoryMethod.Algorithm1
+namespace Core.Algorithm1
 {
     public class PuzzleBrakeCoupleAlgorithm:FactoryBase
     {
       
         int order;
-        SetPuzzle setPuzzle = new SetPuzzle();
-        EnumeratePuzzles puzzlesEnumeration = new EnumeratePuzzles();
+        SetDifferentPuzzles setPuzzle = new SetDifferentPuzzles();
+        ConvertPuzzlesToList puzzlesEnumeration = new ConvertPuzzlesToList();
 
-        public override Puzzle[,] CreatePuzzles()
+        public override Puzzle[,] CreateIdenticalSizePuzzles()
         {
             Puzzle[,] puzzles = new Puzzle[7, 5];
             for (int y = 0; y < 7; y++)
@@ -34,7 +35,7 @@ namespace Core.FactoryMethod.Algorithm1
             return puzzles;
         }
 
-        public override List<Puzzle> ModifyPuzzles(Puzzle[,] puzzles)
+        public override List<Puzzle> CreateDifferentSizePuzzles(Puzzle[,] puzzles)
         {
             for (int y = 0; y < 7; y++)
             {
@@ -46,6 +47,7 @@ namespace Core.FactoryMethod.Algorithm1
                     }
                 }
             }
+          
             List<Puzzle> puzzlesList = puzzlesEnumeration.Create(puzzles);
 
             return puzzlesList;

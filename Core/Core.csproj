@@ -42,10 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FactoryMethod\Algorithm1\AlgorithmAdditionMethods\EnumeratePuzzles.cs" />
-    <Compile Include="FactoryMethod\Algorithm1\AlgorithmAdditionMethods\SetPuzzle.cs" />
-    <Compile Include="FactoryMethod\Algorithm1\PuzzleBrakeCoupleAlgorithm.cs" />
-    <Compile Include="FactoryMethod\FactoryBase.cs" />
+    <Compile Include="Algorithm1\AlgorithmAdditionMethods\ConvertPuzzlesToList.cs" />
+    <Compile Include="Algorithm1\AlgorithmAdditionMethods\SetDifferentPuzzles.cs" />
+    <Compile Include="Algorithm1\PuzzleBrakeCoupleAlgorithm.cs" />
+    <Compile Include="FactoryBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

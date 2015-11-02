@@ -5,32 +5,32 @@ using System.Text;
 using Core;
 using Utilits;
 
-namespace Core.FactoryMethod.Algorithm1.AlgorithmAdditionMethods
+namespace Core.Algorithm1.AlgorithmAdditionMethods
 {
-    public class SetPuzzle
+    public class SetDifferentPuzzles
     {
         Random random = new Random();
         public void SetBrakeCouplePuzzle(int y, int x, Puzzle[,] puzzles)
         {
             if (!puzzles[y, x].Changed)
             {
-                Array values = Enum.GetValues(typeof(PuzzlesStock.puzzleChimera));
-                PuzzlesStock.puzzleChimera puzzleChimera = (PuzzlesStock.puzzleChimera)values.GetValue(random.Next(values.Length));
+                Array values = Enum.GetValues(typeof(PuzzlesConfigurations.puzzleBrakeCoupleEnum));
+                PuzzlesConfigurations.puzzleBrakeCoupleEnum puzzleChimera = (PuzzlesConfigurations.puzzleBrakeCoupleEnum)values.GetValue(random.Next(values.Length));
                 switch (puzzleChimera)
                 {
-                    case PuzzlesStock.puzzleChimera.horizontalDivide:
+                    case PuzzlesConfigurations.puzzleBrakeCoupleEnum.horizontalDivide:
                         HorizontalDivide(y, x, puzzles);
                         break;
-                    case PuzzlesStock.puzzleChimera.untouchable:
+                    case PuzzlesConfigurations.puzzleBrakeCoupleEnum.untouchable:
                         Untouchable(y, x, puzzles);
                         break;
-                    case PuzzlesStock.puzzleChimera.verticalCouple:
+                    case PuzzlesConfigurations.puzzleBrakeCoupleEnum.verticalCouple:
                         VerticalCouple(y, x, puzzles);
                         break;
-                    case PuzzlesStock.puzzleChimera.horizontalCouple:
+                    case PuzzlesConfigurations.puzzleBrakeCoupleEnum.horizontalCouple:
                         HorizontalCouple(y, x, puzzles);
                         break;
-                    case PuzzlesStock.puzzleChimera.verticalDivide:
+                    case PuzzlesConfigurations.puzzleBrakeCoupleEnum.verticalDivide:
                         VerticalDivide(y, x, puzzles);
                         break;
                     default:

@@ -5,9 +5,9 @@ using System.Text;
 using Core;
 using Utilits;
 
-namespace Core.FactoryMethod.Algorithm1.AlgorithmAdditionMethods
+namespace Core.Algorithm1.AlgorithmAdditionMethods
 {
-   public class EnumeratePuzzles
+   public class ConvertPuzzlesToList
     {
        List<Puzzle> puzzlesList = new List<Puzzle>();
        int order;
