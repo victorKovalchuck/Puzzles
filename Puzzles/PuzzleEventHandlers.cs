@@ -11,9 +11,13 @@ namespace Puzzles
     public class PuzzleEventHandlers
     {
         Form1 _form;
-        public PuzzleEventHandlers(Form1 form)
+        List<Puzzle> _basePuzzleList;
+        List<Puzzle> _mixedPuzzleList;
+        public PuzzleEventHandlers(Form1 form, List<Puzzle> basePuzzleList, List<Puzzle> mixedPuzzleList)
         {
             _form = form;
+            _basePuzzleList = basePuzzleList;
+            _mixedPuzzleList = mixedPuzzleList;
         }
 
         public void SetHandlers(List<Puzzle> puzzles)
@@ -21,24 +25,24 @@ namespace Puzzles
             foreach (Puzzle puzzle in puzzles)
             {
                 _form.DragEnter += new DragEventHandler(_form_DragEnter);
-                _form.DragDrop += new DragEventHandler(_form_DragDrop);             
+                _form.DragDrop += new DragEventHandler(_form_DragDrop);
                 puzzle.DragDrop += new System.Windows.Forms.DragEventHandler(puzzle_DragDrop);
                 puzzle.DragEnter += new System.Windows.Forms.DragEventHandler(puzzle_DragEnter);
                 puzzle.MouseDown += new MouseEventHandler(puzzle_MouseDown);
                 puzzle.GiveFeedback += new GiveFeedbackEventHandler(puzzle_GiveFeedback);
                 puzzle.DragOver += new DragEventHandler(puzzle_DragOver);
-                
+
                 ((Control)puzzle).AllowDrop = true;
             }
-            
+
         }
 
         void puzzle_DragOver(object sender, DragEventArgs e)
         {
-          
+
         }
 
-        
+
         void puzzle_GiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
             Puzzle puzzleImage = (Puzzle)sender;
@@ -48,7 +52,7 @@ namespace Puzzles
 
         }
 
-      
+
         void _form_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -61,14 +65,14 @@ namespace Puzzles
             //_form.Controls.Add()
         }
 
-       
+
 
         void puzzle_MouseDown(object sender, MouseEventArgs e)
         {
             Puzzle puzzleImage = (Puzzle)sender;
             puzzleImage.BringToFront();
             if (e.Button == MouseButtons.Left)
-            {                
+            {
                 if (puzzleImage == null) return;
                 puzzleImage.DoDragDrop(puzzleImage, DragDropEffects.Move);
             }
@@ -77,27 +81,35 @@ namespace Puzzles
                 puzzleImage.Size = new Size(puzzleImage.Size.Height, puzzleImage.Size.Width);
                 puzzleImage.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 puzzleImage.Invalidate();
-                
+
             }
-           
+
         }
 
         void puzzle_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            e.Effect = DragDropEffects.Move;            
+            e.Effect = DragDropEffects.Move;
         }
 
         void puzzle_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            Puzzle puzzleSource = (Puzzle)sender;
-            var controls = _form.Controls.Cast<Control>();
-
-            Puzzle puzzleTarget = controls
-                .Where(x => x.Bounds.IntersectsWith(puzzleSource.Bounds) 
-                    && x != puzzleSource && x.GetType()==typeof(Puzzle))
-                .SingleOrDefault() as Puzzle;
-
+            CheckForPictureBuildCorrectness pictureCorrectness = new CheckForPictureBuildCorrectness(_form, _basePuzzleList);
+            bool correct = pictureCorrectness.Check(_mixedPuzzleList);
+            if (correct)
+            {
+                pictureCorrectness.Winner(_mixedPuzzleList);
+            }
         }
 
     }
 }
+
+//Puzzle puzzleSource = (Puzzle)sender;
+//var controls = _form.Controls.Cast<Control>();
+
+//List<Puzzle> puzzlesTarget = controls
+//    .Where(x => x.Bounds.IntersectsWith(puzzleSource.Bounds)
+//        && x != puzzleSource && x.GetType() == typeof(Puzzle)).Cast<Puzzle>()
+//    .ToList();
+//DropPuzzleNearOther dropPuzzles = new DropPuzzleNearOther(puzzleSource);
+//dropPuzzles.PlacePuzzles(puzzlesTarget);

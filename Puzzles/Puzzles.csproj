@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoConstructPicture.cs" />
+    <Compile Include="CheckForPictureBuildCorrectness.cs" />
+    <Compile Include="DropPuzzleNearOther.cs" />
     <Compile Include="PuzzleEventHandlers.cs" />
     <Compile Include="ListExtensionMethods.cs" />
     <Compile Include="RunPuzzlesGame.cs" />

@@ -58,27 +58,30 @@ namespace Puzzles
 
         private void FillBottomSiteByPuzzles(List<Puzzle> puzzles)
         {
-            int controlY = _form1.Size.Height - _picture.Height + 20; ;
-            int controlX = 20;
+            int puzzlesAreaY = _form1.Size.Height - _picture.Height + 20; 
+            int puzzlesAreaX = 20;
+            int buttonsArea = 350;
             List<Puzzle> restOfPuzzles;
             for (int i = 0; i < puzzles.Count; i++)
             {
-                if (controlX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width)
+                if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width)
                 {
-                    controlX = 20;
-                    controlY += 140 + distenseBetweenPuzzles;
-                    if (controlY + 140 > _form1.Size.Height)
-                    {
-                        restOfPuzzles = puzzles
-                        .Skip(i)
-                        .Take(puzzles.Count)
-                        .ToList();
-                        FillLeftSiteByPuzzles(restOfPuzzles);
-                        break;
-                    }
-                }                
-                puzzles[i].Location = new Point(controlX, controlY);
-                controlX += puzzles[i].Size.Width + distenseBetweenPuzzles;
+                    puzzlesAreaX = 20;
+                    puzzlesAreaY += 140 + distenseBetweenPuzzles;
+                }
+                else if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles + buttonsArea > _form1.Size.Width
+                     && puzzlesAreaY >_form1.Size.Height - _picture.Height + 20)
+                {
+                    restOfPuzzles = puzzles
+                    .Skip(i)
+                    .Take(puzzles.Count)
+                    .ToList();
+                    FillLeftSiteByPuzzles(restOfPuzzles);
+                    break;
+
+                }
+                puzzles[i].Location = new Point(puzzlesAreaX, puzzlesAreaY);
+                puzzlesAreaX += puzzles[i].Size.Width + distenseBetweenPuzzles;
                 _form1.Controls.Add(puzzles[i]);
             }
         }
@@ -86,22 +89,22 @@ namespace Puzzles
 
         private List<Puzzle> RotatePictureBox(List<Puzzle> puzzles)
         {
-            Array values = Enum.GetValues(typeof(PuzzlesStock.rotateVariants));
+            Array values = Enum.GetValues(typeof(PuzzlesConfigurations.rotateVariants));
             foreach (Puzzle puzzle in puzzles)
             {
-                PuzzlesStock.rotateVariants rotateFlip = (PuzzlesStock.rotateVariants)values.GetValue(rng.Next(values.Length));
+                PuzzlesConfigurations.rotateVariants rotateFlip = (PuzzlesConfigurations.rotateVariants)values.GetValue(rng.Next(values.Length));
                 switch (rotateFlip)
                 {
-                    case PuzzlesStock.rotateVariants.Rotate90:
+                    case PuzzlesConfigurations.rotateVariants.Rotate90:
                         puzzle.Size = new Size(puzzle.Size.Height, puzzle.Size.Width);
                         puzzle.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                         puzzle.ImageDegree = 90;
                         break;
-                    case PuzzlesStock.rotateVariants.Rotate180:
+                    case PuzzlesConfigurations.rotateVariants.Rotate180:
                         puzzle.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
                         puzzle.ImageDegree = 180;
                         break;
-                    case PuzzlesStock.rotateVariants.Rotate270:
+                    case PuzzlesConfigurations.rotateVariants.Rotate270:
                         puzzle.Size = new Size(puzzle.Size.Height, puzzle.Size.Width);
                         puzzle.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
                         puzzle.ImageDegree = 270;

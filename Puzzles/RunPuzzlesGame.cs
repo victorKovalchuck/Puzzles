@@ -5,8 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using Core;
-using Core.FactoryMethod;
-using Core.FactoryMethod.Algorithm1;
+using Core.Algorithm1;
 using Utilits;
 
 namespace Puzzles
@@ -16,6 +15,7 @@ namespace Puzzles
         Form1 _form;
         PictureBox _image;
         List<Puzzle> basicPictureLocationList;
+        List<Puzzle> mixedPictureLocationList;
         public RunPuzzlesGame(Form1 form, PictureBox image)
         {
             this._form = form;
@@ -25,17 +25,17 @@ namespace Puzzles
         public void Start()
         {
             FactoryBase factory = new PuzzleBrakeCoupleAlgorithm();
-            Puzzle[,] puzzles = factory.CreatePuzzles();
-            List<Puzzle> puzzlesList = factory.ModifyPuzzles(puzzles);
+            Puzzle[,] puzzles = factory.CreateIdenticalSizePuzzles();
+            List<Puzzle> puzzlesList = factory.CreateDifferentSizePuzzles(puzzles);
 
             SetPuzzleImage setImagesToPuzzles = new SetPuzzleImage(_image);
             puzzlesList = setImagesToPuzzles.SetImage(puzzlesList);
 
             basicPictureLocationList = puzzlesList.Clone<Puzzle>().ToList();           
             ThrowPuzzlesOnDesk throwPuzzles = new ThrowPuzzlesOnDesk(_form, _image);
-            List<Puzzle> puzzlesPictureBox = throwPuzzles.Throw(puzzlesList);
-            PuzzleEventHandlers eventHandlers = new PuzzleEventHandlers(_form);
-            eventHandlers.SetHandlers(puzzlesPictureBox);
+            mixedPictureLocationList = throwPuzzles.Throw(puzzlesList);
+            PuzzleEventHandlers eventHandlers = new PuzzleEventHandlers(_form, basicPictureLocationList, mixedPictureLocationList);
+            eventHandlers.SetHandlers(mixedPictureLocationList);
         }
 
         public void BuildPicture()
