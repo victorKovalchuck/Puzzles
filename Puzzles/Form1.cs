@@ -27,7 +27,9 @@ namespace Puzzles
                 pictureBox1.Location = new Point(this.Size.Width - 400, 20);
                 Image img = Image.FromFile(openFileDialog1.FileName);
                 pictureBox1.Image = resizeImage(img, new Size(this.pictureBox1.Width, this.pictureBox1.Height));
+                brakeImage.Enabled = true;                
             }
+
 
         }
 
@@ -39,7 +41,9 @@ namespace Puzzles
         private void button2_Click(object sender, EventArgs e)
         {
             puzzleGame = new RunPuzzlesGame(this, pictureBox1);
-            puzzleGame.Start();        
+            puzzleGame.Start();
+            buildPicture.Enabled = true;
+            loadPicture.Enabled = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -53,10 +57,10 @@ namespace Puzzles
             this.WindowState = FormWindowState.Maximized;
             Screen myScreen = Screen.FromControl(this);
             Rectangle area = myScreen.WorkingArea;
-            this.button1.Location = new Point(area.Width - button1.Width - 60, area.Height - 50);
-            this.button2.Location = new Point(area.Width - button2.Size.Width - button1.Size.Width - 80, area.Height - 50);
-            this.button4.Location = new Point(area.Width - button2.Size.Width - button1.Size.Width*2 - 100, area.Height - 50);
-            this.button3.Location = new Point(area.Width - button3.Size.Width, 0);
+            this.loadPicture.Location = new Point(area.Width - loadPicture.Width - 60, area.Height - 50);
+            this.brakeImage.Location = new Point(area.Width - brakeImage.Size.Width - loadPicture.Size.Width - 80, area.Height - 50);
+            this.buildPicture.Location = new Point(area.Width - brakeImage.Size.Width - loadPicture.Size.Width*2 - 100, area.Height - 50);
+            this.closeButton.Location = new Point(area.Width - closeButton.Size.Width, 0);
         }
 
         private void button4_Click(object sender, EventArgs e)
