@@ -9,7 +9,7 @@ namespace Utilits
     public class PuzzlesConfigurations
     {        
         public enum puzzleBrakeCoupleEnum { horizontalDivide, verticalCouple, untouchable, verticalDivide, horizontalCouple };
-        public enum rotateVariants { Rotate90, Rotate180, Rotate270 };
+        public enum rotateVariants {Rotate0, Rotate90, Rotate180, Rotate270 };
     
     }
 }

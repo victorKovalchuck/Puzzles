@@ -18,6 +18,12 @@ namespace Utilits
         public bool Changed = false;
         public Puzzle[] divededPuzzles = new Puzzle[2];
 
+        public List<Puzzle> leftPuzzle;
+        public Puzzle rightPuzzle;
+        public Puzzle topPuzzle;
+        public List<Puzzle> bottomPuzzle;
+
+
         public int Width
         {
             get
@@ -92,7 +98,9 @@ namespace Utilits
         public object Clone()
         {
             Puzzle newPuzzle = (Puzzle)this.MemberwiseClone();
-            newPuzzle.Image = (Image)this.Image.Clone();
+           
+                newPuzzle.Image = (Image)this.Image.Clone();
+            
             return newPuzzle;
         }
 
@@ -104,5 +112,6 @@ namespace Utilits
             }
             return this._imageOrder.CompareTo(other._imageOrder);
         }
+
     }
 }

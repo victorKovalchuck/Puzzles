@@ -1,0 +1,12 @@
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\bin\Debug\Puzzles.exe
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\bin\Debug\Puzzles.pdb
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\bin\Debug\Core.dll
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\bin\Debug\Utilits.dll
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\bin\Debug\Core.pdb
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\bin\Debug\Utilits.pdb
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\obj\x86\Debug\Puzzles.csprojResolveAssemblyReference.cache
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\obj\x86\Debug\Puzzles.Form1.resources
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\obj\x86\Debug\Puzzles.Properties.Resources.resources
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\obj\x86\Debug\Puzzles.csproj.GenerateResource.Cache
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\obj\x86\Debug\Puzzles.exe
+C:\Users\RAZOR\Desktop\Puzzles\Puzzles\obj\x86\Debug\Puzzles.pdb

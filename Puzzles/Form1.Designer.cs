@@ -51,7 +51,7 @@ namespace Puzzles
             this.loadPicture.TabIndex = 0;
             this.loadPicture.Text = "Load Image";
             this.loadPicture.UseVisualStyleBackColor = true;
-            this.loadPicture.Click += new System.EventHandler(this.button1_Click);
+            this.loadPicture.Click += new System.EventHandler(this.loadPicture_Click);
             // 
             // brakeImage
             // 
@@ -63,7 +63,7 @@ namespace Puzzles
             this.brakeImage.TabIndex = 2;
             this.brakeImage.Text = "Brake Image";
             this.brakeImage.UseVisualStyleBackColor = true;
-            this.brakeImage.Click += new System.EventHandler(this.button2_Click);
+            this.brakeImage.Click += new System.EventHandler(this.brakeImage_Click);
             // 
             // closeButton
             // 
@@ -73,7 +73,7 @@ namespace Puzzles
             this.closeButton.Size = new System.Drawing.Size(40, 40);
             this.closeButton.TabIndex = 3;
             this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.button3_Click);
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // pictureBox1
             // 
@@ -93,13 +93,14 @@ namespace Puzzles
             this.buildPicture.TabIndex = 4;
             this.buildPicture.Text = "Build Image";
             this.buildPicture.UseVisualStyleBackColor = true;
-            this.buildPicture.Click += new System.EventHandler(this.button4_Click);
+            this.buildPicture.Click += new System.EventHandler(this.buildPicture_Click);
             // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1020, 482);
             this.Controls.Add(this.buildPicture);
             this.Controls.Add(this.closeButton);

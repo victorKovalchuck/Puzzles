@@ -18,7 +18,7 @@ namespace Puzzles
             InitControlsLocation();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void loadPicture_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             openFileDialog1.Title = "Please select an image file.";
@@ -38,15 +38,16 @@ namespace Puzzles
             return (Image)(new Bitmap(imgToResize, size));
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void brakeImage_Click(object sender, EventArgs e)
         {
             puzzleGame = new RunPuzzlesGame(this, pictureBox1);
             puzzleGame.Start();
             buildPicture.Enabled = true;
             loadPicture.Enabled = false;
+            brakeImage.Enabled = false;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void closeButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -63,7 +64,7 @@ namespace Puzzles
             this.closeButton.Location = new Point(area.Width - closeButton.Size.Width, 0);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void buildPicture_Click(object sender, EventArgs e)
         {
             if (puzzleGame != null)
             {

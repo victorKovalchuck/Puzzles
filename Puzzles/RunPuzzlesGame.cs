@@ -27,9 +27,11 @@ namespace Puzzles
             FactoryBase factory = new PuzzleBrakeCoupleAlgorithm();
             Puzzle[,] puzzles = factory.CreateIdenticalSizePuzzles();
             List<Puzzle> puzzlesList = factory.CreateDifferentSizePuzzles(puzzles);
-
             SetPuzzleImage setImagesToPuzzles = new SetPuzzleImage(_image);
             puzzlesList = setImagesToPuzzles.SetImage(puzzlesList);
+            SetConjunctionBetweenPuzzles setConnection = new SetConjunctionBetweenPuzzles(puzzlesList, _form,_image);
+            setConnection.SetConnection();
+           
 
             basicPictureLocationList = puzzlesList.Clone<Puzzle>().ToList();           
             ThrowPuzzlesOnDesk throwPuzzles = new ThrowPuzzlesOnDesk(_form, _image);
