@@ -11,10 +11,10 @@ namespace Puzzles
     public class SetConjunctionBetweenPuzzles
     {
         List<Puzzle> _puzzles;
-        Form1 _form;
+        FormGameTable _form;
         PictureBox _picture;
         SetSmallPuzzlesLocation setSmallPuzzle = new SetSmallPuzzlesLocation();
-        public SetConjunctionBetweenPuzzles(List<Puzzle> puzzles, Form1 form,PictureBox picture)
+        public SetConjunctionBetweenPuzzles(List<Puzzle> puzzles, FormGameTable form,PictureBox picture)
         {
             this._picture = picture;
             this._puzzles = puzzles;
@@ -65,13 +65,11 @@ namespace Puzzles
                     setSmallPuzzle.SetLeftPuzzleLocation(puzzle);
 
                     leftPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");
-                    leftPuzzle.BringToFront();
+                    //leftPuzzle.BringToFront();
                     _form.Controls.Add(leftPuzzle);
                     puzzle.leftPuzzle.Add(leftPuzzle);
                 }
-            }
-
-        
+            }        
         }
 
         public void SetBottomPuzzle(Puzzle puzzle)
@@ -93,7 +91,7 @@ namespace Puzzles
                     bottomPuzzle.CoordinateY = intersectedPuzzles[i].Location.Y;
                     setSmallPuzzle.SetBottomPuzzleLocation(puzzle);
                     bottomPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");
-                    bottomPuzzle.BringToFront();
+                    //bottomPuzzle.BringToFront();
                     _form.Controls.Add(bottomPuzzle);
                     puzzle.bottomPuzzle.Add(bottomPuzzle);
                 }
@@ -108,7 +106,7 @@ namespace Puzzles
                 puzzle.rightPuzzle.Size = new Size(10, 10);
                 setSmallPuzzle.SetRightPuzzleLocation(puzzle);
                 puzzle.rightPuzzle.Image =GetPartOfImage(new Rectangle(puzzle.CoordinateX + puzzle.Width, puzzle.CoordinateY + puzzle.Height / 2 - 5, 10, 10));        
-                puzzle.rightPuzzle.BringToFront();
+                //puzzle.rightPuzzle.BringToFront();
                 _form.Controls.Add(puzzle.rightPuzzle);
             }
         

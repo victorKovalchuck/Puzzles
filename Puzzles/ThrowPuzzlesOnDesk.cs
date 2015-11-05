@@ -11,12 +11,12 @@ namespace Puzzles
 {
     public class ThrowPuzzlesOnDesk
     {
-        const int distenseBetweenPuzzles = 20;
+        const int distenseBetweenPuzzles = 10;
         PictureBox _picture;
-        Form1 _form1;
+        FormGameTable _form1;
         Random rng = new Random();
         SetSmallPuzzlesLocation smallPuzzles = new SetSmallPuzzlesLocation();
-        public ThrowPuzzlesOnDesk(Form1 form1, PictureBox picture)
+        public ThrowPuzzlesOnDesk(FormGameTable form1, PictureBox picture)
         {
             this._picture = picture;
             this._form1 = form1;
@@ -41,7 +41,7 @@ namespace Puzzles
             int controlX = 20;
             for (int i = 0; i < puzzles.Count; i++)
             {
-                if (controlX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width / 3)
+                if (controlX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width / 4)
                 {
                     controlX = 20;
                     controlY += 140 + distenseBetweenPuzzles;
@@ -51,51 +51,63 @@ namespace Puzzles
                     }
                 }
                 puzzles[i].Location = new Point(controlX, controlY);
+                SetSmallPuzzles(puzzles[i]);
                 controlX += puzzles[i].Size.Width + distenseBetweenPuzzles;
                 _form1.Controls.Add(puzzles[i]);
+
             }            
         }
 
         private void FillBottomSiteByPuzzles(List<Puzzle> puzzles)
         {
-            int puzzlesAreaY = _form1.Size.Height - _picture.Height + 20; 
+            int puzzlesAreaY = _picture.Location.Y + _picture.Height + 20;
             int puzzlesAreaX = 20;
-            int buttonsArea = 350;
+            int buttonsArea = 270;
             List<Puzzle> restOfPuzzles;
             for (int i = 0; i < puzzles.Count; i++)
-            {
+            {               
                 if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width)
                 {
                     puzzlesAreaX = 20;
-                    puzzlesAreaY += 140 + distenseBetweenPuzzles;
+                    puzzlesAreaY += puzzles.Select(x=>x.Size.Width).Max() + distenseBetweenPuzzles;
                 }
-                //else if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles + buttonsArea > _form1.Size.Width
-                //     && puzzlesAreaY >_form1.Size.Height - _picture.Height + 20)
-                //{
-                //    restOfPuzzles = puzzles
-                //    .Skip(i)
-                //    .Take(puzzles.Count)
-                //    .ToList();
-                //    FillLeftSiteByPuzzles(restOfPuzzles);
-                //    break;
+                else if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles + buttonsArea > _form1.Size.Width
+                     && puzzlesAreaY+140 > _form1.Size.Height)
+                {
+                    restOfPuzzles = puzzles
+                    .Skip(i)
+                    .Take(puzzles.Count)
+                    .ToList();
+                    FillLeftSiteByPuzzles(restOfPuzzles);
+                    break;
 
-                //}
+                }
                 puzzles[i].Location = new Point(puzzlesAreaX, puzzlesAreaY);
-                if (puzzles[i].topPuzzle != null)
-                {
-                   smallPuzzles.SetTopPuzzleLocation(puzzles[i]);
-                }
-                if (puzzles[i].rightPuzzle != null)
-                {
-                    smallPuzzles.SetRightPuzzleLocation(puzzles[i]);
-                }
-                
-                   smallPuzzles.SetBottomPuzzleLocation(puzzles[i]);
-                   smallPuzzles.SetLeftPuzzleLocation(puzzles[i]);
+                SetSmallPuzzles(puzzles[i]);
                    
                 
                 puzzlesAreaX += puzzles[i].Size.Width + distenseBetweenPuzzles;
                 _form1.Controls.Add(puzzles[i]);
+            }
+        }
+
+        private void SetSmallPuzzles(Puzzle puzzle)
+        {
+            if (puzzle.topPuzzle != null)
+            {
+                smallPuzzles.SetTopPuzzleLocation(puzzle);
+            }
+            if (puzzle.rightPuzzle != null)
+            {
+                smallPuzzles.SetRightPuzzleLocation(puzzle);
+            }
+            if (puzzle.bottomPuzzle != null)
+            {
+                smallPuzzles.SetBottomPuzzleLocation(puzzle);
+            }
+            if (puzzle.leftPuzzle != null)
+            {
+                smallPuzzles.SetLeftPuzzleLocation(puzzle);
             }
         }
 

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puzzles", "Puzzles\Puzzles.csproj", "{7F7F8AA7-BE06-48BB-AA0B-46C7FCCED16B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilits", "Utilits\Utilits.csproj", "{754DC9BB-9FB6-432A-B84E-2C198D2C8572}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utilits\Utils.csproj", "{754DC9BB-9FB6-432A-B84E-2C198D2C8572}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{9F8C85DD-3FB9-4DD7-AB51-3A9AAC6DFA89}"
 EndProject

@@ -45,6 +45,7 @@ namespace Core.Algorithm1.AlgorithmAdditionMethods
             puzzles[y, x].divededPuzzles = new Puzzle[2] { new Puzzle(), new Puzzle() };
             for (int i = 0; i < 2; i++)
             {
+                puzzles[y, x].divededPuzzles[i].Height = puzzles[y, x].Height;
                 puzzles[y, x].divededPuzzles[i].Width = puzzles[y, x].Width / 2;
                 puzzles[y, x].divededPuzzles[i].CoordinateY = puzzles[y, x].CoordinateY;
                 if (i == 0)
@@ -91,6 +92,7 @@ namespace Core.Algorithm1.AlgorithmAdditionMethods
             puzzles[y, x].divededPuzzles = new Puzzle[2] { new Puzzle(), new Puzzle() };
             for (int i = 0; i < 2; i++)
             {
+                puzzles[y, x].divededPuzzles[i].Width = puzzles[y, x].Width;
                 puzzles[y, x].divededPuzzles[i].Height = puzzles[y, x].Height / 2;
                 puzzles[y, x].divededPuzzles[i].CoordinateX = puzzles[y, x].CoordinateX;
                 if (i == 0)

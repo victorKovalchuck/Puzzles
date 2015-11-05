@@ -12,8 +12,8 @@ namespace Utilits
         int _coordinateX;
         int _coordinateY;
         int _imageOrder;
-        int _width = 70;
-        int _height = 50;        
+        int _width;
+        int _height;        
         int _imageDegree;
         public bool Changed = false;
         public Puzzle[] divededPuzzles = new Puzzle[2];
@@ -98,9 +98,8 @@ namespace Utilits
         public object Clone()
         {
             Puzzle newPuzzle = (Puzzle)this.MemberwiseClone();
-           
-                newPuzzle.Image = (Image)this.Image.Clone();
-            
+            newPuzzle.Image = (Image)this.Image.Clone();
+
             return newPuzzle;
         }
 
@@ -112,6 +111,6 @@ namespace Utilits
             }
             return this._imageOrder.CompareTo(other._imageOrder);
         }
-
+        
     }
 }

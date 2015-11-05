@@ -1,5 +1,0 @@
-C:\Users\RAZOR\Desktop\Puzzles\Utilits\bin\Debug\Utilits.dll
-C:\Users\RAZOR\Desktop\Puzzles\Utilits\bin\Debug\Utilits.pdb
-C:\Users\RAZOR\Desktop\Puzzles\Utilits\obj\Debug\Utilits.csprojResolveAssemblyReference.cache
-C:\Users\RAZOR\Desktop\Puzzles\Utilits\obj\Debug\Utilits.dll
-C:\Users\RAZOR\Desktop\Puzzles\Utilits\obj\Debug\Utilits.pdb

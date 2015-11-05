@@ -92,9 +92,9 @@
       <Project>{9F8C85DD-3FB9-4DD7-AB51-3A9AAC6DFA89}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utilits\Utilits.csproj">
+    <ProjectReference Include="..\Utilits\Utils.csproj">
       <Project>{754DC9BB-9FB6-432A-B84E-2C198D2C8572}</Project>
-      <Name>Utilits</Name>
+      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

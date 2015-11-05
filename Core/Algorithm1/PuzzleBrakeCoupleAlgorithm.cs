@@ -13,21 +13,22 @@ namespace Core.Algorithm1
     public class PuzzleBrakeCoupleAlgorithm:FactoryBase
     {
       
-        int order;
         SetDifferentPuzzles setPuzzle = new SetDifferentPuzzles();
         ConvertPuzzlesToList puzzlesEnumeration = new ConvertPuzzlesToList();
 
-        public override Puzzle[,] CreateIdenticalSizePuzzles()
+        public override Puzzle[,] CreateIdenticalSizePuzzles(Image image)
         {
             Puzzle[,] puzzles = new Puzzle[7, 5];
+            
             for (int y = 0; y < 7; y++)
             {
                 for (int x = 0; x < 5; x++)
                 {
                     Puzzle puzzle = new Puzzle();
+                    puzzle.Width = image.Width / 5;
+                    puzzle.Height = image.Height / 7;
                     puzzle.CoordinateX = puzzle.Width * x;
-                    puzzle.CoordinateY = puzzle.Height * y;                   
-                    puzzle.ImageOrder = ++order;
+                    puzzle.CoordinateY = puzzle.Height * y;                                       
                     puzzles[y, x] = puzzle;
                 }
             }
@@ -51,6 +52,18 @@ namespace Core.Algorithm1
             List<Puzzle> puzzlesList = puzzlesEnumeration.Create(puzzles);
 
             return puzzlesList;
+        }
+
+        private void SetPuzzleSize(Image image,Puzzle[,] puzzles)
+        {
+            for (int y = 0; y < 7; y++)
+            {
+                for (int x = 0; x < 5; x++)
+                {
+                    puzzles[y, x].Width = image.Width / 5;
+                    puzzles[y, x].Height = image.Height / 7;
+                }
+            }
         }
     
     }

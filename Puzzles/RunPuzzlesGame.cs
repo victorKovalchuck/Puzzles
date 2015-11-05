@@ -12,20 +12,20 @@ namespace Puzzles
 {
     public class RunPuzzlesGame
     {
-        Form1 _form;
+        FormGameTable _form;
         PictureBox _image;
         List<Puzzle> basicPictureLocationList;
         List<Puzzle> mixedPictureLocationList;
-        public RunPuzzlesGame(Form1 form, PictureBox image)
+        public RunPuzzlesGame(FormGameTable form, PictureBox image)
         {
             this._form = form;
             this._image = image;
         }
 
         public void Start()
-        {
+        {                   
             FactoryBase factory = new PuzzleBrakeCoupleAlgorithm();
-            Puzzle[,] puzzles = factory.CreateIdenticalSizePuzzles();
+            Puzzle[,] puzzles = factory.CreateIdenticalSizePuzzles(_image.Image);
             List<Puzzle> puzzlesList = factory.CreateDifferentSizePuzzles(puzzles);
             SetPuzzleImage setImagesToPuzzles = new SetPuzzleImage(_image);
             puzzlesList = setImagesToPuzzles.SetImage(puzzlesList);
@@ -37,14 +37,14 @@ namespace Puzzles
             ThrowPuzzlesOnDesk throwPuzzles = new ThrowPuzzlesOnDesk(_form, _image);
             mixedPictureLocationList = throwPuzzles.Throw(puzzlesList);
             PuzzleEventHandlers eventHandlers = new PuzzleEventHandlers(_form, basicPictureLocationList, mixedPictureLocationList);
-            eventHandlers.SetHandlers(mixedPictureLocationList);
+            eventHandlers.SetHandlers(_image);
         }
 
         public void BuildPicture()
         {
             if (basicPictureLocationList != null)
             {
-                AutoConstructPicture picture = new AutoConstructPicture(_form);
+                AutoConstructPicture picture = new AutoConstructPicture(_form, _image);
                 picture.Construct(basicPictureLocationList);
             }
         }
