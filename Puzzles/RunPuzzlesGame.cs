@@ -16,6 +16,8 @@ namespace Puzzles
         PictureBox _image;
         List<Puzzle> basicPictureLocationList;
         List<Puzzle> mixedPictureLocationList;
+        AutoConstructPicture picture;
+        PuzzleEventHandlers eventHandlers;
         public RunPuzzlesGame(FormGameTable form, PictureBox image)
         {
             this._form = form;
@@ -36,7 +38,7 @@ namespace Puzzles
             basicPictureLocationList = puzzlesList.Clone<Puzzle>().ToList();           
             ThrowPuzzlesOnDesk throwPuzzles = new ThrowPuzzlesOnDesk(_form, _image);
             mixedPictureLocationList = throwPuzzles.Throw(puzzlesList);
-            PuzzleEventHandlers eventHandlers = new PuzzleEventHandlers(_form, basicPictureLocationList, mixedPictureLocationList);
+            eventHandlers = new PuzzleEventHandlers(_form, basicPictureLocationList, mixedPictureLocationList);
             eventHandlers.SetHandlers(_image);
         }
 
@@ -44,9 +46,33 @@ namespace Puzzles
         {
             if (basicPictureLocationList != null)
             {
-                AutoConstructPicture picture = new AutoConstructPicture(_form, _image);
+                picture = new AutoConstructPicture(_form, _image);
                 picture.Construct(basicPictureLocationList);
             }
+        }
+
+        public void DisposePuzzles()
+        {
+            foreach (Puzzle puzzle in mixedPictureLocationList)
+            {
+                foreach (Puzzle bottomPuzzle in puzzle.bottomPuzzle)
+                {
+                    bottomPuzzle.Dispose();
+                }
+                foreach (Puzzle leftPuzzle in puzzle.leftPuzzle)
+                {
+                    leftPuzzle.Dispose();
+                }
+                puzzle.topPuzzle.Dispose();
+                puzzle.rightPuzzle.Dispose();
+                puzzle.Dispose();
+            }
+            if (picture != null)
+            {
+                picture.DisposePuzzles();
+            }
+            eventHandlers.DisposePanel();
+            _form.Refresh();
         }
     }
 }

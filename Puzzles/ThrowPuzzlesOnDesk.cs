@@ -11,10 +11,14 @@ namespace Puzzles
 {
     public class ThrowPuzzlesOnDesk
     {
-        const int distenseBetweenPuzzles = 10;
+        const int distenseBetweenPuzzles = 20;
+        const int buttonsArea = 150;
         PictureBox _picture;
         FormGameTable _form1;
         Random rng = new Random();
+        int maxSizePuzzle;
+        int maxSizeSmallerPuzzle;
+
         SetSmallPuzzlesLocation smallPuzzles = new SetSmallPuzzlesLocation();
         public ThrowPuzzlesOnDesk(FormGameTable form1, PictureBox picture)
         {
@@ -26,69 +30,125 @@ namespace Puzzles
         {
             List<Puzzle> puzzlesList = RotatePictureBox(puzzles);
             puzzlesList.Shuffle();
-            SpillPuzzles(puzzlesList);
+            FillBottomSiteBySmallerPuzzles(puzzlesList);
             return puzzlesList;
         }
+       
 
-        private void SpillPuzzles(List<Puzzle> puzzles)
+        private void FillBottomSiteBySmallerPuzzles(List<Puzzle> puzzles)
         {
-            FillBottomSiteByPuzzles(puzzles);           
+            int puzzlesAreaY = _picture.Location.Y + _picture.Height + 20;
+            int puzzlesAreaX = 20;          
+
+            List<Puzzle> smallerPuzzles = GetSmallerPuzzlesSize(puzzles);
+            for (int i = 0; i <= smallerPuzzles.Count; i++)
+            {
+                if (smallerPuzzles.Count == i)
+                {
+                    List<Puzzle> biggerPuzzles = puzzles.Where(s => smallerPuzzles.All(w => w != s))
+                        .ToList();
+                    puzzlesAreaX +=  distenseBetweenPuzzles;
+                    
+                    SetPuzzlesWithBiggerSize(biggerPuzzles, new Point(puzzlesAreaX, puzzlesAreaY));
+                    return;
+                }
+                if (puzzlesAreaX + smallerPuzzles[i].Size.Width > _form1.Size.Width - buttonsArea)
+                {
+                    puzzlesAreaX = 20;
+                    puzzlesAreaY += smallerPuzzles.Select(x => x.Size.Height).Max() + distenseBetweenPuzzles;                  
+                }                
+          
+                smallerPuzzles[i].Location = new Point(puzzlesAreaX, puzzlesAreaY);
+                SetSmallPuzzles(smallerPuzzles[i]);
+
+
+                puzzlesAreaX += smallerPuzzles[i].Size.Width + distenseBetweenPuzzles;
+                _form1.Controls.Add(smallerPuzzles[i]);
+            }
         }
 
-        private void FillLeftSiteByPuzzles(List<Puzzle> puzzles)
+        private void SetPuzzlesWithBiggerSize(List<Puzzle> puzzles, Point point)
+        {
+            List<Puzzle> puzzlesUpOnScreen = puzzles.Where(x => x.Size.Height > x.Size.Width).ToList();
+            List<Puzzle> puzzlesDownOnScreen = puzzles.Where(x => x.Size.Height < x.Size.Width).ToList();
+            SetPuzzleOnTop(puzzlesUpOnScreen);
+            SetPuzzleOnBottom(puzzlesDownOnScreen, point);
+        }
+
+        private void SetPuzzleOnTop(List<Puzzle> puzzlesUpOfScreen)
         {
             int controlY = 20;
             int controlX = 20;
-            for (int i = 0; i < puzzles.Count; i++)
+            for (int i = 0; i < puzzlesUpOfScreen.Count; i++)
             {
-                if (controlX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width / 4)
+                if (controlX + puzzlesUpOfScreen[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width / 3)
                 {
                     controlX = 20;
-                    controlY += 140 + distenseBetweenPuzzles;
-                    if (controlY + puzzles[i].Size.Height + distenseBetweenPuzzles > _form1.Size.Height * 2 / 3)
-                    {
-                        break;                        
-                    }
+                    controlY += maxSizePuzzle + distenseBetweenPuzzles;
+                   
                 }
-                puzzles[i].Location = new Point(controlX, controlY);
-                SetSmallPuzzles(puzzles[i]);
-                controlX += puzzles[i].Size.Width + distenseBetweenPuzzles;
-                _form1.Controls.Add(puzzles[i]);
-
+                puzzlesUpOfScreen[i].Location = new Point(controlX, controlY);
+                SetSmallPuzzles(puzzlesUpOfScreen[i]);
+                controlX += puzzlesUpOfScreen[i].Size.Width + distenseBetweenPuzzles;
+                _form1.Controls.Add(puzzlesUpOfScreen[i]);
             }            
+        
         }
-
-        private void FillBottomSiteByPuzzles(List<Puzzle> puzzles)
+        private void SetPuzzleOnBottom(List<Puzzle> puzzlesDownOfScreen, Point point)
         {
-            int puzzlesAreaY = _picture.Location.Y + _picture.Height + 20;
-            int puzzlesAreaX = 20;
-            int buttonsArea = 270;
-            List<Puzzle> restOfPuzzles;
-            for (int i = 0; i < puzzles.Count; i++)
-            {               
-                if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width)
+            int puzzlesAreaX = point.X;
+            int puzzlesAreaY = point.Y;
+            for (int i = 0; i < puzzlesDownOfScreen.Count; i++)
+            {
+                if (puzzlesAreaX + puzzlesDownOfScreen[i].Size.Width > _form1.Size.Width -buttonsArea)
                 {
                     puzzlesAreaX = 20;
-                    puzzlesAreaY += puzzles.Select(x=>x.Size.Width).Max() + distenseBetweenPuzzles;
+                    puzzlesAreaY += maxSizeSmallerPuzzle + distenseBetweenPuzzles;
                 }
-                else if (puzzlesAreaX + puzzles[i].Size.Width + distenseBetweenPuzzles + buttonsArea > _form1.Size.Width
-                     && puzzlesAreaY+140 > _form1.Size.Height)
-                {
-                    restOfPuzzles = puzzles
-                    .Skip(i)
-                    .Take(puzzles.Count)
-                    .ToList();
-                    FillLeftSiteByPuzzles(restOfPuzzles);
-                    break;
+                puzzlesDownOfScreen[i].Location = new Point(puzzlesAreaX, puzzlesAreaY);
+                SetSmallPuzzles(puzzlesDownOfScreen[i]);
 
-                }
-                puzzles[i].Location = new Point(puzzlesAreaX, puzzlesAreaY);
-                SetSmallPuzzles(puzzles[i]);
-                   
-                
-                puzzlesAreaX += puzzles[i].Size.Width + distenseBetweenPuzzles;
-                _form1.Controls.Add(puzzles[i]);
+
+                puzzlesAreaX += puzzlesDownOfScreen[i].Size.Width + distenseBetweenPuzzles;
+                _form1.Controls.Add(puzzlesDownOfScreen[i]);
             }
+        }
+
+        private List<Puzzle> GetSmallerPuzzlesSize(List<Puzzle> puzzles)
+        {           
+  
+            int secondMaxPuzzleSize;
+            int lessThanMaxWith = puzzles
+                .Where(x => x.Size.Width != maxSizePuzzle || x.Size.Height != maxSizePuzzle)
+                .Select(x=>x.Size.Width)
+                .Max();
+            int lessThanMaxHeight = puzzles
+                .Where(x => x.Size.Width != maxSizePuzzle || x.Size.Height != maxSizePuzzle)
+                .Select(x => x.Size.Height)
+                .Max();
+            if (lessThanMaxHeight > lessThanMaxWith)
+            {
+                secondMaxPuzzleSize = lessThanMaxHeight;
+            }
+            else
+            {
+                secondMaxPuzzleSize = lessThanMaxWith;
+            }
+            List<Puzzle> smallerPuzzels = puzzles
+                .Where(x => x.Size.Width < secondMaxPuzzleSize && x.Size.Height < secondMaxPuzzleSize)
+                .ToList();
+            int smallerPuzzleMaxWidth = smallerPuzzels.Select(x => x.Size.Width).Max();
+            int smallerPuzzleMaxHeight = smallerPuzzels.Select(x => x.Size.Width).Max();
+            if (smallerPuzzleMaxWidth > smallerPuzzleMaxHeight)
+            {
+                maxSizeSmallerPuzzle = smallerPuzzleMaxWidth;
+            }
+            else
+            {
+                maxSizeSmallerPuzzle = smallerPuzzleMaxHeight;
+            }
+               
+            return smallerPuzzels;
         }
 
         private void SetSmallPuzzles(Puzzle puzzle)
@@ -164,6 +224,21 @@ namespace Puzzles
             }
 
             return puzzles;
-        }       
+        }
+
+
+        private void MaxPuzzleSize(List<Puzzle> puzzles)
+        {
+            int maxWidth = puzzles.Select(x => x.Size.Width).Max();
+            int maxHeight = puzzles.Select(x => x.Size.Height).Max();
+            if (maxHeight > maxWidth)
+            {
+                maxSizePuzzle = maxHeight;
+            }
+            else
+            {
+                maxSizePuzzle = maxWidth;
+            }
+        }
     }
 }

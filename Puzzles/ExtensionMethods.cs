@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Puzzles
 {
-    public static class ListExtensionMethods
+    public static class ExtensionMethods
     {
         public static void Shuffle<T>(this IList<T> list)
         {

@@ -14,6 +14,7 @@ namespace Puzzles
         FormGameTable form;
         SetSmallPuzzlesLocation smallPuzzles = new SetSmallPuzzlesLocation();
         PictureBox _image;
+        List<Puzzle> automatedConstructPuzzlesList=new List<Puzzle>();
         public AutoConstructPicture(FormGameTable form1, PictureBox image)
         {
             this.form = form1;
@@ -27,7 +28,7 @@ namespace Puzzles
             {
                 Puzzle automatedPuzzle = new Puzzle();
                               
-                automatedPuzzle.Location = new System.Drawing.Point(puzzle.CoordinateX + form.Width-_image.Width-40, puzzle.CoordinateY + 20);
+                automatedPuzzle.Location = new System.Drawing.Point(puzzle.CoordinateX + form.Width-_image.Width-20, puzzle.CoordinateY + 20);
                 automatedPuzzle.Size = new System.Drawing.Size(puzzle.Width, puzzle.Height);
                 automatedPuzzle.Width = puzzle.Width;
                 automatedPuzzle.Height = puzzle.Height;
@@ -35,6 +36,7 @@ namespace Puzzles
          
                 automatedPuzzle.BorderStyle = BorderStyle.Fixed3D;
                 automatedPuzzle.BringToFront();
+                automatedPuzzle.Click += new EventHandler(automatedPuzzle_Click);
               //  automatedPuzzle.BackColor = Color.Transparent;
                 if (puzzle.topPuzzle != null && puzzle.topPuzzle.Image != null)
                 {
@@ -62,19 +64,44 @@ namespace Puzzles
                 }
                 automatedPuzzle.BackColor = Color.Transparent;
                 form.Controls.Add(automatedPuzzle);
-               
-                
-                    _image.SendToBack();
-                    
-                
-
-
-              
-                
-               
+                automatedConstructPuzzlesList.Add(automatedPuzzle);
+                _image.SendToBack();                                                                     
             }
+        }
 
+        void automatedPuzzle_Click(object sender, EventArgs e)
+        {           
+            form.ChangePicture();          
+        }
 
+        public void DisposePuzzles()
+        {
+            foreach (Puzzle puzzle in automatedConstructPuzzlesList)
+            {
+                if (puzzle.bottomPuzzle != null)
+                {
+                    foreach (Puzzle bottomPuzzle in puzzle.bottomPuzzle)
+                    {
+                        bottomPuzzle.Dispose();
+                    }
+                }
+                if (puzzle.leftPuzzle != null)
+                {
+                    foreach (Puzzle leftPuzzle in puzzle.leftPuzzle)
+                    {
+                        leftPuzzle.Dispose();
+                    }
+                }
+                if (puzzle.topPuzzle != null)
+                {
+                    puzzle.topPuzzle.Dispose();
+                }
+                if (puzzle.rightPuzzle != null)
+                {
+                    puzzle.rightPuzzle.Dispose();
+                }
+                puzzle.Dispose();
+            }
         }
     }
 

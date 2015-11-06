@@ -28,7 +28,6 @@ namespace Puzzles
             {
                 SetTopPuzzle(_puzzles[i]);
                
-
             }
             for (int i = 0; i < _puzzles.Count; i++)
             {
@@ -63,9 +62,7 @@ namespace Puzzles
                     leftPuzzle.CoordinateX = intersectedPuzzles[i].Location.X;
                     leftPuzzle.CoordinateY = intersectedPuzzles[i].Location.Y - puzzle.Location.Y;
                     setSmallPuzzle.SetLeftPuzzleLocation(puzzle);
-
-                    leftPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");
-                    //leftPuzzle.BringToFront();
+                    leftPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");                   
                     _form.Controls.Add(leftPuzzle);
                     puzzle.leftPuzzle.Add(leftPuzzle);
                 }
@@ -90,8 +87,7 @@ namespace Puzzles
                     bottomPuzzle.CoordinateX = intersectedPuzzles[i].Location.X - puzzle.Location.X;
                     bottomPuzzle.CoordinateY = intersectedPuzzles[i].Location.Y;
                     setSmallPuzzle.SetBottomPuzzleLocation(puzzle);
-                    bottomPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");
-                    //bottomPuzzle.BringToFront();
+                    bottomPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");                   
                     _form.Controls.Add(bottomPuzzle);
                     puzzle.bottomPuzzle.Add(bottomPuzzle);
                 }
@@ -105,8 +101,7 @@ namespace Puzzles
             {
                 puzzle.rightPuzzle.Size = new Size(10, 10);
                 setSmallPuzzle.SetRightPuzzleLocation(puzzle);
-                puzzle.rightPuzzle.Image =GetPartOfImage(new Rectangle(puzzle.CoordinateX + puzzle.Width, puzzle.CoordinateY + puzzle.Height / 2 - 5, 10, 10));        
-                //puzzle.rightPuzzle.BringToFront();
+                puzzle.rightPuzzle.Image =GetPartOfImage(new Rectangle(puzzle.CoordinateX + puzzle.Width, puzzle.CoordinateY + puzzle.Height / 2 - 5, 10, 10));          
                 _form.Controls.Add(puzzle.rightPuzzle);
             }
         
@@ -126,7 +121,7 @@ namespace Puzzles
       
 
         private Image GetPartOfImage(Rectangle rec)
-        {
+        {            
             Bitmap sourceBitmap = new Bitmap(_picture.Image);
             Bitmap croppedBitmap = sourceBitmap.Clone(rec, sourceBitmap.PixelFormat);
             return croppedBitmap;

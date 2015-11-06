@@ -33,73 +33,18 @@ namespace Puzzles
         {
 
             foreach (Puzzle puzzle in _mixedPuzzleList)
-            {
-                _form.DragEnter += new DragEventHandler(_form_DragEnter);
-                //_form.DragDrop += new DragEventHandler(_form_DragDrop);
+            {                         
                 puzzle.DragDrop += new System.Windows.Forms.DragEventHandler(puzzle_DragDrop);
                 puzzle.DragEnter += new System.Windows.Forms.DragEventHandler(puzzle_DragEnter);
                 puzzle.MouseDown += new MouseEventHandler(puzzle_MouseDown);
-                puzzle.GiveFeedback += new GiveFeedbackEventHandler(puzzle_GiveFeedback);
-                puzzle.DragOver += new DragEventHandler(puzzle_DragOver);
-                _form.DragOver += new DragEventHandler(_form_DragOver);
-              //  puzzle.BringToFront();
-                //puzzle.topPuzzle.BringToFront();
-                //puzzle.rightPuzzle.BringToFront();
+                puzzle.GiveFeedback += new GiveFeedbackEventHandler(puzzle_GiveFeedback);          
+             
                 ((Control)puzzle).AllowDrop = true;
             }
 
             SetPanel(image);
-
         }
-
-        void puzzle_DragOver(object sender, DragEventArgs e)
-        {
-            //Puzzle puzzle = (Puzzle)sender;
-            //var controls = _form.Controls.Cast<Control>();
-            //List<Puzzle> intersectedPuzzles = controls
-            //    .Where(x => x.Bounds.IntersectsWith(puzzle.Bounds)
-            //        && x != puzzle && x.GetType() == typeof(Puzzle) && x.Size.Width!=10).Cast<Puzzle>().ToList();
-
-            //foreach (Puzzle intersectedPuzzle in intersectedPuzzles)
-            //{
-            //    BringToFront(intersectedPuzzle);
-            //}            
-        }
-
-        public void SetPanel(PictureBox image)
-        {
-
-            panel = new Panel();
-            panel.Location = new Point(_form.Size.Width / 4, 20);
-
-            panel.Size = new Size(_form.Size.Width- _form.Size.Width/4- image.Width-60 ,image.Image.Size.Height + image.Location.Y-20);
-            panel.BorderStyle = BorderStyle.FixedSingle;
-            panel.BackColor = Color.Transparent;
-         //   panel.SendToBack();
-
-            title = new Label();
-            title.Width = panel.Width;
-            title.Height = panel.Height;
-            title.Text = "Game table.Construct image here\nUse image dragdrop feature.Right botton click to rotate image";
-            title.AutoSize = false;
-            title.TextAlign = ContentAlignment.MiddleCenter;
-            title.Dock = DockStyle.Fill;
           
-            title.Font = new Font(FontFamily.GenericSansSerif,12);
-            title.ForeColor = Color.Red;
-                  
-            panel.Controls.Add(title);
-            _form.Controls.Add(panel);
-        }
-
-        void _form_DragOver(object sender, DragEventArgs e)
-        {
-
-            e.Effect = DragDropEffects.None;
-        }
-
-
-
         void puzzle_GiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
 
@@ -110,82 +55,20 @@ namespace Puzzles
             smallPuzzles.SetTopPuzzleLocation(puzzle);
             smallPuzzles.SetBottomPuzzleLocation(puzzle);
             smallPuzzles.SetRightPuzzleLocation(puzzle);
-            smallPuzzles.SetLeftPuzzleLocation(puzzle);
-           
-            puzzle.Refresh();
-            
-            //var controls = _form.Controls.Cast<Control>();
-            //List<Puzzle> intersectedPuzzles = controls
-            //    .Where(x => x.Bounds.IntersectsWith(puzzle.Bounds)
-            //        && x != puzzle && x.GetType() == typeof(Puzzle) && x.Size.Width != 10).Cast<Puzzle>().ToList();
-            //foreach (Puzzle intersectedPuzzle in intersectedPuzzles)
-            //{
-              
-            //    foreach(Puzzle puzz in intersectedPuzzle.bottomPuzzle)
-            //    {
-            //        puzz.SendToBack();
-            //    }                              
-            //}
-         
-        }
-
-
-        void _form_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.Move;
-        }
-
-        //void _form_DragDrop(object sender, DragEventArgs e)
-        //{
-        //    Puzzle puzzle = e.Data.GetData(typeof(Puzzle)) as Puzzle;
-        //    puzzle.Location = _form.PointToClient(new Point(e.X, e.Y));
-        //    //_form.Controls.Add()
-        //}
-        void BringToFront(Puzzle puzzle)
-        {
-            puzzle.BringToFront();
-            puzzle.topPuzzle.BringToFront();
-            puzzle.rightPuzzle.BringToFront();
-            foreach (Puzzle bottomPuzzle in puzzle.bottomPuzzle)
-            {
-                bottomPuzzle.BringToFront();
-                bottomPuzzle.BackColor = Color.Transparent;
-            }
-            foreach (Puzzle leftPuzzle in puzzle.leftPuzzle)
-            {
-                leftPuzzle.BringToFront();
-                leftPuzzle.BackColor = Color.Transparent;
-            }
-            puzzle.Invalidate();
-        }
-
-        void SendToBack(Puzzle puzzle)
-        {
-            puzzle.SendToBack();
-            puzzle.topPuzzle.SendToBack();
-            puzzle.rightPuzzle.SendToBack();
-            foreach (Puzzle bottomPuzzle in puzzle.bottomPuzzle)
-            {
-                bottomPuzzle.SendToBack();
-            }
-            foreach (Puzzle leftPuzzle in puzzle.leftPuzzle)
-            {
-                leftPuzzle.SendToBack();
-            }
-            puzzle.Invalidate();
-        }
-
+            smallPuzzles.SetLeftPuzzleLocation(puzzle);           
+            puzzle.Refresh();     
+        }      
 
 
         void puzzle_MouseDown(object sender, MouseEventArgs e)
         {
-           
+
             Puzzle puzzle = (Puzzle)sender;
             differnceBetweenCursorAndPuzzleX = Cursor.Position.X - puzzle.Location.X;
             differnceBetweenCursorAndPuzzleY = Cursor.Position.Y - puzzle.Location.Y;
             startCoorddinateX = puzzle.Location.X;
             startCoorddinateY = puzzle.Location.Y;
-             puzzle.topPuzzle.BringToFront();
+            puzzle.topPuzzle.BringToFront();
             puzzle.rightPuzzle.BringToFront();
             if (e.Button == MouseButtons.Left)
             {
@@ -209,29 +92,25 @@ namespace Puzzles
                 {
                     puzzle.topPuzzle.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     smallPuzzles.SetTopPuzzleLocation(puzzle);
-                    puzzle.topPuzzle.Invalidate(); 
+                    puzzle.topPuzzle.Invalidate();
                 }
                 if (puzzle.rightPuzzle.Image != null)
                 {
                     puzzle.rightPuzzle.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     smallPuzzles.SetRightPuzzleLocation(puzzle);
-                    puzzle.rightPuzzle.Invalidate(); 
+                    puzzle.rightPuzzle.Invalidate();
                 }
 
                 if (puzzle.bottomPuzzle != null)
                 {
-                    smallPuzzles.SetBottomPuzzleLocation(puzzle);                  
+                    smallPuzzles.SetBottomPuzzleLocation(puzzle);
                 }
                 if (puzzle.leftPuzzle != null)
                 {
                     smallPuzzles.SetLeftPuzzleLocation(puzzle);
                 }
-              
-
-               
-                puzzle.Invalidate();                
+                puzzle.Invalidate();
             }
-
         }
 
      
@@ -255,7 +134,6 @@ namespace Puzzles
                     title.Visible = false;
        
                 }
-
             }
             else
             {
@@ -266,7 +144,6 @@ namespace Puzzles
                 smallPuzzles.SetRightPuzzleLocation(puzzle);
             }
 
-
             CheckForPictureBuildCorrectness pictureCorrectness = new CheckForPictureBuildCorrectness(_form, _basePuzzleList);
             bool correct = pictureCorrectness.Check(_mixedPuzzleList);
             if (correct)
@@ -274,6 +151,35 @@ namespace Puzzles
                 pictureCorrectness.Winner(_mixedPuzzleList);
             }
         }
+
+
+
+        private void SetPanel(PictureBox image)
+        {
+            panel = new Panel();
+            panel.Location = new Point(_form.Size.Width / 4, 20);
+            panel.Size = new Size(_form.Size.Width - _form.Size.Width / 4 - image.Width - 60, image.Image.Size.Height + image.Location.Y - 20);
+            panel.BorderStyle = BorderStyle.FixedSingle;
+            panel.BackColor = Color.Transparent;
+            title = new Label();
+            title.Width = panel.Width;
+            title.Height = panel.Height;
+            title.Text = "Game table.Construct image here\nUse image dragdrop feature.Right botton click to rotate image";
+            title.AutoSize = false;
+            title.TextAlign = ContentAlignment.MiddleCenter;
+            title.Dock = DockStyle.Fill;
+            title.Font = new Font(FontFamily.GenericSansSerif, 12);
+            title.ForeColor = Color.Red;
+            panel.Controls.Add(title);
+            _form.Controls.Add(panel);
+        }
+
+        public void DisposePanel()
+        {
+            title.Dispose();
+            panel.Dispose();
+        }
+    
 
     }
 }

@@ -30,7 +30,7 @@ namespace Puzzles
               .Cast<Puzzle>()
               .Where(x => x.ImageOrder == 1)
               .FirstOrDefault();
-            if (firstPuzzle.Location.X > 0 && firstPuzzle.Location.Y > 0)
+            if (firstPuzzle!=null)
             {
                 firstPuzzleCoordinateX = firstPuzzle.Location.X;
                 firstPuzzleCoordinateY = firstPuzzle.Location.Y;
@@ -40,9 +40,10 @@ namespace Puzzles
 
                     int puzzleMiddleX = _basePuzzlesList[i].CoordinateX + firstPuzzleCoordinateX + _basePuzzlesList[i].Width / 2;
                     int puzzleMiddleY = _basePuzzlesList[i].CoordinateY + firstPuzzleCoordinateY + _basePuzzlesList[i].Height / 2;
-                    try
+
+                    Puzzle searchablePuzzle = _form.GetChildAtPoint(new Point(puzzleMiddleX, puzzleMiddleY)) as Puzzle;
+                    if (searchablePuzzle != null)
                     {
-                        Puzzle searchablePuzzle = _form.GetChildAtPoint(new Point(puzzleMiddleX, puzzleMiddleY)) as Puzzle;
                         if (searchablePuzzle.ImageOrder == ++order)
                         {
                             continue;
@@ -52,9 +53,9 @@ namespace Puzzles
                             order = 0;
                             return false;
                         }
-
                     }
-                    catch
+
+                    else
                     {
                         order = 0;
                         return false;
