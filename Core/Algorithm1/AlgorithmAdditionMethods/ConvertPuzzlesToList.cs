@@ -14,9 +14,9 @@ namespace Core.Algorithm1.AlgorithmAdditionMethods
 
        public List<Puzzle> Create(Puzzle[,] puzzles)
        {
-           for (int y = 0; y < 7; y++)
+           for (int y = 0; y < PuzzlesConfigurations.Vertical; y++)
            {
-               for (int x = 0; x < 5; x++)
+               for (int x = 0; x < PuzzlesConfigurations.Horizontal; x++)
                {
                    if (puzzles[y, x] != null)
                    {
@@ -38,6 +38,6 @@ namespace Core.Algorithm1.AlgorithmAdditionMethods
            }
 
            return puzzlesList;
-       }
+       }     
     }
 }

@@ -6,12 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Utilits;
 
 namespace Puzzles
 {
     public partial class FormGameTable : Form
     {
-        const int distanceBetweenControls = 20;
+        const int distanceBetweenControls = 30;
         RunPuzzlesGame puzzleGame;
         Image image;
         bool firstRound=true;
@@ -21,7 +22,6 @@ namespace Puzzles
             InitializeComponent();
             InitControlsLocation();
         }
-
 
         private void startGame_Click(object sender, EventArgs e)
         {
@@ -61,11 +61,10 @@ namespace Puzzles
 
         private void InitControlsLocation()
         {
-            Screen myScreens = Screen.FromControl(this);
-
+            Screen myScreens = Screen.FromControl(this);          
             this.autoConstruct.Location = new Point(this.Width - autoConstruct.Width - distanceBetweenControls, myScreens.WorkingArea.Height - autoConstruct.Height - distanceBetweenControls);
             mainPicture.Location = new Point(this.Width - mainPicture.Width - distanceBetweenControls, distanceBetweenControls);
-            pictureText.Location = new Point(mainPicture.Location.X + (mainPicture.Width - pictureText.Width) / 2, mainPicture.Height / 2);
+            pictureText.Location = new Point(mainPicture.Location.X + (mainPicture.Width - pictureText.Width) / 2, mainPicture.Location.Y + mainPicture.Height / 2-pictureText.Height);
         }
 
         private void autoConstruct_Click(object sender, EventArgs e)
@@ -85,36 +84,55 @@ namespace Puzzles
         }
 
         private void mainPicture_Click(object sender, EventArgs e)
-        {
-            pictureText.Visible = false;
+        {           
             openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             openFileDialog1.Title = "Please select an image file.";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (puzzleGame != null)
             {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want change picture and end this game ?", "ChangePicture", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    puzzleGame.DisposePuzzles();
+                    firstRound = false;
+                    autoConstruct.Enabled = false;  
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }   
+            }
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {               
                 image = Image.FromFile(openFileDialog1.FileName);
+                if (image.Width < 50 || image.Height < 50)
+                {
+                    pictureText.Text = "picture is too small";
+                    return;
+                }
                 if (image.Width > 400 || image.Height > 350)
                 {
                     image = image.Resize(400, 350);
                 }
+                pictureText.Visible = false;
                 mainPicture.Size = GetAliquotImageSize(new System.Drawing.Size(image.Width, image.Height));
                 mainPicture.Image = resizeImage(image, mainPicture.Size);
                 mainPicture.Location = new Point(this.Size.Width - mainPicture.Size.Width - distanceBetweenControls, distanceBetweenControls);
 
-                startGame.Visible = true; ;
+                startGame.Visible = true; 
             }
 
             this.startGame.Location = new Point(mainPicture.Location.X + mainPicture.Width - startGame.Width,
                 mainPicture.Location.Y + mainPicture.Height + distanceBetweenControls);
         }
 
-        private Size GetAliquotImageSize(Size size)
+        public Size GetAliquotImageSize(Size size)
         {
-            while (size.Width % 5 != 0)
+            while (size.Width % PuzzlesConfigurations.Horizontal != 0)
             {
                 size.Width--;
 
             }
-            while (size.Height % 7 != 0)
+            while (size.Height % PuzzlesConfigurations.Vertical != 0)
             {
                 size.Height--;
             }
@@ -132,13 +150,28 @@ namespace Puzzles
             if (dialogResult == DialogResult.Yes)
             {              
                 puzzleGame.DisposePuzzles();
+                puzzleGame = null;
                 firstRound = false;
                 mainPicture_Click(new object(), new EventArgs());
                 startGame.Visible = true;
+                autoConstruct.Enabled = false;
             }
             else if (dialogResult == DialogResult.No)
             {
             }         
         }
+
+        private void x5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PuzzlesConfigurations.SetPuzzlesAmount(PuzzlesConfigurations.ApproximatelyPuzzlesNumbers.Size4x5);
+        }
+
+        private void x3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PuzzlesConfigurations.SetPuzzlesAmount(PuzzlesConfigurations.ApproximatelyPuzzlesNumbers.Size3x4);
+        }
+
+    
+       
     }
 }

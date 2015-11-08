@@ -5,15 +5,15 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Utilits
+namespace Core
 {
-    public class Puzzle : PictureBox, ICloneable,IComparable<Puzzle>
+    public class Puzzle : PictureBox, ICloneable, IComparable<Puzzle>
     {
         int _coordinateX;
         int _coordinateY;
         int _imageOrder;
         int _width;
-        int _height;        
+        int _height;
         int _imageDegree;
         public bool Changed = false;
         public Puzzle[] divededPuzzles = new Puzzle[2];
@@ -111,6 +111,6 @@ namespace Utilits
             }
             return this._imageOrder.CompareTo(other._imageOrder);
         }
-        
+
     }
 }

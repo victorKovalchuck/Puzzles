@@ -13,40 +13,38 @@ namespace Puzzles
     public class RunPuzzlesGame
     {
         FormGameTable _form;
-        PictureBox _image;
+        PictureBox _pictureBox;
         List<Puzzle> basicPictureLocationList;
         List<Puzzle> mixedPictureLocationList;
         AutoConstructPicture picture;
         PuzzleEventHandlers eventHandlers;
-        public RunPuzzlesGame(FormGameTable form, PictureBox image)
+        public RunPuzzlesGame(FormGameTable form, PictureBox pictureBox)
         {
             this._form = form;
-            this._image = image;
+            this._pictureBox = pictureBox;
         }
 
         public void Start()
-        {                   
-            FactoryBase factory = new PuzzleBrakeCoupleAlgorithm();
-            Puzzle[,] puzzles = factory.CreateIdenticalSizePuzzles(_image.Image);
-            List<Puzzle> puzzlesList = factory.CreateDifferentSizePuzzles(puzzles);
-            SetPuzzleImage setImagesToPuzzles = new SetPuzzleImage(_image);
+        {           
+            PuzzlesStrategyFactoryMethod puzzlesStrategy = new PuzzlesStrategyFactoryMethod(_pictureBox.Image);
+            IPuzzlesStrategy differentPuzzleStrategy = puzzlesStrategy.GetStrategy(PuzzlesConfigurations.StrategyTypeEnum.Different);
+            List<Puzzle> puzzlesList = differentPuzzleStrategy.ExtractPuzzles();           
+            SetPuzzleImage setImagesToPuzzles = new SetPuzzleImage(_pictureBox);
             puzzlesList = setImagesToPuzzles.SetImage(puzzlesList);
-            SetConjunctionBetweenPuzzles setConnection = new SetConjunctionBetweenPuzzles(puzzlesList, _form,_image);
-            setConnection.SetConnection();
-           
-
+            SetConjunctionBetweenPuzzles setConnection = new SetConjunctionBetweenPuzzles(puzzlesList, _form,_pictureBox);
+            setConnection.SetConnection();           
             basicPictureLocationList = puzzlesList.Clone<Puzzle>().ToList();           
-            ThrowPuzzlesOnDesk throwPuzzles = new ThrowPuzzlesOnDesk(_form, _image);
+            ThrowPuzzlesOnDesk throwPuzzles = new ThrowPuzzlesOnDesk(_form, _pictureBox);
             mixedPictureLocationList = throwPuzzles.Throw(puzzlesList);
             eventHandlers = new PuzzleEventHandlers(_form, basicPictureLocationList, mixedPictureLocationList);
-            eventHandlers.SetHandlers(_image);
+            eventHandlers.SetHandlers(_pictureBox);
         }
 
         public void BuildPicture()
         {
             if (basicPictureLocationList != null)
             {
-                picture = new AutoConstructPicture(_form, _image);
+                picture = new AutoConstructPicture(_form, _pictureBox);
                 picture.Construct(basicPictureLocationList);
             }
         }

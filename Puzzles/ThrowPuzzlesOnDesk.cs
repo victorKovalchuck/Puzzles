@@ -41,6 +41,10 @@ namespace Puzzles
             int puzzlesAreaX = 20;          
 
             List<Puzzle> smallerPuzzles = GetSmallerPuzzlesSize(puzzles);
+            if (smallerPuzzles.Count == 0)
+            {
+                smallerPuzzles = puzzles;
+            }
             for (int i = 0; i <= smallerPuzzles.Count; i++)
             {
                 if (smallerPuzzles.Count == i)
@@ -77,15 +81,14 @@ namespace Puzzles
 
         private void SetPuzzleOnTop(List<Puzzle> puzzlesUpOfScreen)
         {
-            int controlY = 20;
+            int controlY = 35;
             int controlX = 20;
             for (int i = 0; i < puzzlesUpOfScreen.Count; i++)
             {
                 if (controlX + puzzlesUpOfScreen[i].Size.Width + distenseBetweenPuzzles > _form1.Size.Width / 3)
                 {
                     controlX = 20;
-                    controlY += maxSizePuzzle + distenseBetweenPuzzles;
-                   
+                    controlY += maxSizePuzzle + distenseBetweenPuzzles;                   
                 }
                 puzzlesUpOfScreen[i].Location = new Point(controlX, controlY);
                 SetSmallPuzzles(puzzlesUpOfScreen[i]);
@@ -137,15 +140,18 @@ namespace Puzzles
             List<Puzzle> smallerPuzzels = puzzles
                 .Where(x => x.Size.Width < secondMaxPuzzleSize && x.Size.Height < secondMaxPuzzleSize)
                 .ToList();
-            int smallerPuzzleMaxWidth = smallerPuzzels.Select(x => x.Size.Width).Max();
-            int smallerPuzzleMaxHeight = smallerPuzzels.Select(x => x.Size.Width).Max();
-            if (smallerPuzzleMaxWidth > smallerPuzzleMaxHeight)
+            if (smallerPuzzels.Count != 0)
             {
-                maxSizeSmallerPuzzle = smallerPuzzleMaxWidth;
-            }
-            else
-            {
-                maxSizeSmallerPuzzle = smallerPuzzleMaxHeight;
+                int smallerPuzzleMaxWidth = smallerPuzzels.Select(x => x.Size.Width).Max();
+                int smallerPuzzleMaxHeight = smallerPuzzels.Select(x => x.Size.Width).Max();
+                if (smallerPuzzleMaxWidth > smallerPuzzleMaxHeight)
+                {
+                    maxSizeSmallerPuzzle = smallerPuzzleMaxWidth;
+                }
+                else
+                {
+                    maxSizeSmallerPuzzle = smallerPuzzleMaxHeight;
+                }
             }
                
             return smallerPuzzels;
@@ -184,46 +190,38 @@ namespace Puzzles
                         break;
                     case PuzzlesConfigurations.rotateVariants.Rotate90:
                         puzzle.Size = new Size(puzzle.Size.Height, puzzle.Size.Width);
-                        puzzle.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                        puzzle.ImageDegree = 90;
-                        if (puzzle.topPuzzle.Image != null)
-                        {
-                            puzzle.topPuzzle.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                        }
-                        if (puzzle.rightPuzzle.Image != null)
-                        {
-                            puzzle.rightPuzzle.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                        }
+                        puzzle.ImageDegree = (int)PuzzlesConfigurations.rotateVariants.Rotate90;
+                        RotateVariants(puzzle, RotateFlipType.Rotate90FlipNone);
                         break;
                     case PuzzlesConfigurations.rotateVariants.Rotate180:
-                        puzzle.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                        puzzle.ImageDegree = 180;
-                        if (puzzle.topPuzzle.Image != null)
-                        {
-                            puzzle.topPuzzle.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                        }
-                        if (puzzle.rightPuzzle.Image != null)
-                        {
-                            puzzle.rightPuzzle.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                        }
+                        puzzle.ImageDegree = (int)PuzzlesConfigurations.rotateVariants.Rotate180;
+                        RotateVariants(puzzle, RotateFlipType.Rotate180FlipNone);
                         break;
                     case PuzzlesConfigurations.rotateVariants.Rotate270:
                         puzzle.Size = new Size(puzzle.Size.Height, puzzle.Size.Width);
-                        puzzle.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                        puzzle.ImageDegree = 270;
-                        if (puzzle.topPuzzle.Image != null)
-                        {
-                            puzzle.topPuzzle.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                        }
-                        if (puzzle.rightPuzzle.Image != null)
-                        {
-                            puzzle.rightPuzzle.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                        }
+                        puzzle.ImageDegree = (int)PuzzlesConfigurations.rotateVariants.Rotate270;
+                        RotateVariants(puzzle, RotateFlipType.Rotate270FlipNone);
                         break;
                 }                                        
             }
 
             return puzzles;
+        }
+
+        private void RotateVariants(Puzzle puzzle, RotateFlipType rotate)
+        {
+            if (puzzle!=null && puzzle.Image != null)
+            {
+                puzzle.Image.RotateFlip(rotate);              
+            }
+            if (puzzle.topPuzzle != null && puzzle.topPuzzle.Image != null)
+            {
+                puzzle.topPuzzle.Image.RotateFlip(rotate);
+            }
+            if (puzzle.rightPuzzle != null && puzzle.rightPuzzle.Image != null)
+            {
+                puzzle.rightPuzzle.Image.RotateFlip(rotate);
+            }
         }
 
 

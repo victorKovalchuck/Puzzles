@@ -3,27 +3,49 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Drawing;
-using System.Reflection;
-using System.IO;
+using System.Windows.Forms;
+using Core;
 using Core.Algorithm1;
 using Utilits;
-using System.Windows.Forms;
+using System.Drawing;
 
 namespace PuzzlesTest
 {
     [TestClass]
     public class CoreTest
     {
-        [TestMethod]
-        public void PuzzleBrakeCoupleAlgorithmTest()
+    
+        PictureBox pictureBox;
+        [TestInitialize]
+        public void SetPictureBox()
         {
-            PictureBox pictureBox = new PictureBox();
-            pictureBox.Image = Image.FromFile(@"C:\Users\RAZOR\Desktop\Puzzles\Puzzles\Resources\Background.bmp");           
-            PuzzleBrakeCoupleAlgorithm puzzleAlgorithm = new PuzzleBrakeCoupleAlgorithm();
-            Puzzle[,] sameSizesPuzzles = puzzleAlgorithm.CreateIdenticalSizePuzzles(pictureBox.Image);
-            Assert.AreEqual(40, sameSizesPuzzles[0, 0].Width);
-           
+
+            pictureBox = new PictureBox();
+            pictureBox.Image = Image.FromFile("ImageForTest.jpg");
+        }
+        [TestMethod]
+        public void CreateIdenticalSizePuzzlesTest()
+        {
+            PuzzlesStrategyFactoryMethod puzzlesStrategy = new PuzzlesStrategyFactoryMethod(pictureBox.Image);
+            IPuzzlesStrategy identicalPuzzlesStrategy = puzzlesStrategy.GetStrategy(PuzzlesConfigurations.StrategyTypeEnum.Identical);
+            List<Puzzle> puzzles = identicalPuzzlesStrategy.ExtractPuzzles();
+            Assert.AreEqual(puzzles[0].Width, puzzles[1].Width);
+
+        }
+
+        [TestMethod]
+        public void CreateDifferentSizePuzzlesTest()
+        {
+            PuzzlesStrategyFactoryMethod puzzlesStrategy = new PuzzlesStrategyFactoryMethod(pictureBox.Image);
+            IPuzzlesStrategy differentPuzzlesStrategy = puzzlesStrategy.GetStrategy(PuzzlesConfigurations.StrategyTypeEnum.Different);
+            List<Puzzle> puzzles = differentPuzzlesStrategy.ExtractPuzzles();
+            foreach (Puzzle puzzle in puzzles)
+            {
+                if (puzzle.Width != puzzles[0].Width)
+                {
+                    Assert.AreNotEqual(puzzle.Width, puzzles[0].Width);
+                }               
+            }
         }
     }
 }

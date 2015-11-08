@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EF012B5B-13ED-4EBB-9287-9658BC3E4E4C}</ProjectGuid>
+    <ProjectGuid>{6691F9F0-552A-4EB6-BCAF-54922B9D8861}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PuzzlesTest</RootNamespace>
@@ -49,17 +49,25 @@
   <ItemGroup>
     <Compile Include="CoreTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetConjunctionBetweenPuzzlesTest.cs" />
+    <Compile Include="PuzzlesTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{9F8C85DD-3FB9-4DD7-AB51-3A9AAC6DFA89}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Puzzles\Puzzles.csproj">
+      <Project>{7F7F8AA7-BE06-48BB-AA0B-46C7FCCED16B}</Project>
+      <Name>Puzzles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilits\Utils.csproj">
       <Project>{754DC9BB-9FB6-432A-B84E-2C198D2C8572}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ImageForTesting\ImageForTest.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,6 +11,7 @@ namespace Puzzles
 {
     public class AutoConstructPicture
     {
+        const int distanseBetweenControls = 30;
         FormGameTable form;
         SetSmallPuzzlesLocation smallPuzzles = new SetSmallPuzzlesLocation();
         PictureBox _image;
@@ -23,50 +24,46 @@ namespace Puzzles
         public void Construct(List<Puzzle> puzzles)
         {
             puzzles.Sort();
-
             foreach (Puzzle puzzle in puzzles)
             {
                 Puzzle automatedPuzzle = new Puzzle();
-                              
-                automatedPuzzle.Location = new System.Drawing.Point(puzzle.CoordinateX + form.Width-_image.Width-20, puzzle.CoordinateY + 20);
+                automatedPuzzle.Location = new System.Drawing.Point(puzzle.CoordinateX + form.Width - _image.Width - distanseBetweenControls, puzzle.CoordinateY + distanseBetweenControls);
                 automatedPuzzle.Size = new System.Drawing.Size(puzzle.Width, puzzle.Height);
                 automatedPuzzle.Width = puzzle.Width;
                 automatedPuzzle.Height = puzzle.Height;
-                automatedPuzzle.Image = puzzle.Image;
-         
-                automatedPuzzle.BorderStyle = BorderStyle.Fixed3D;
-                automatedPuzzle.BringToFront();
+                automatedPuzzle.Image = puzzle.Image;         
+                automatedPuzzle.BorderStyle = BorderStyle.Fixed3D;            
                 automatedPuzzle.Click += new EventHandler(automatedPuzzle_Click);
-              //  automatedPuzzle.BackColor = Color.Transparent;
+              
                 if (puzzle.topPuzzle != null && puzzle.topPuzzle.Image != null)
                 {
-
-                    automatedPuzzle.topPuzzle = new Puzzle();                   
+                   automatedPuzzle.topPuzzle= SetPuzzle(automatedPuzzle.topPuzzle);
                     automatedPuzzle.topPuzzle.Image = puzzle.topPuzzle.Image;
-                    automatedPuzzle.topPuzzle.Size = new Size(10, 10);
-                    automatedPuzzle.topPuzzle.BorderStyle = BorderStyle.Fixed3D;
-                    automatedPuzzle.Parent = automatedPuzzle.topPuzzle;
-                    smallPuzzles.SetTopPuzzleLocation(automatedPuzzle);
-                    form.Controls.Add(automatedPuzzle.topPuzzle);
-                  automatedPuzzle.topPuzzle.BringToFront();
+                    smallPuzzles.SetTopPuzzleLocation(automatedPuzzle);                                     
+                  
                 }
                 if (puzzle.rightPuzzle != null && puzzle.rightPuzzle.Image != null)
                 {
-
-                    automatedPuzzle.rightPuzzle = new Puzzle();
-                    automatedPuzzle.rightPuzzle.Image = puzzle.rightPuzzle.Image;
-                    automatedPuzzle.rightPuzzle.Size = new Size(10, 10);
-                    automatedPuzzle.rightPuzzle.BorderStyle = BorderStyle.Fixed3D;
-                    automatedPuzzle.Parent = automatedPuzzle.rightPuzzle;
+                    automatedPuzzle.rightPuzzle = SetPuzzle(automatedPuzzle.rightPuzzle);
+                    automatedPuzzle.rightPuzzle.Image = puzzle.rightPuzzle.Image;                         
                     smallPuzzles.SetRightPuzzleLocation(automatedPuzzle);                   
-                    form.Controls.Add(automatedPuzzle.rightPuzzle);
-                    automatedPuzzle.rightPuzzle.BringToFront();
-                }
-                automatedPuzzle.BackColor = Color.Transparent;
+                   
+                }              
                 form.Controls.Add(automatedPuzzle);
                 automatedConstructPuzzlesList.Add(automatedPuzzle);
                 _image.SendToBack();                                                                     
             }
+        }
+
+        Puzzle SetPuzzle(Puzzle puzzle)
+        {
+            puzzle = new Puzzle();
+
+            puzzle.Size = new Size(10, 10);
+            puzzle.BorderStyle = BorderStyle.Fixed3D;         
+            form.Controls.Add(puzzle);
+            puzzle.BringToFront();
+            return puzzle;
         }
 
         void automatedPuzzle_Click(object sender, EventArgs e)

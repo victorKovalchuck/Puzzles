@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using Utilits;
 using System.Drawing;
+using Core;
 
 namespace Puzzles
 {
@@ -12,6 +13,8 @@ namespace Puzzles
     {
         FormGameTable _form;
         List<Puzzle> _basePuzzlesList;
+        Label winnerLabel;
+        Label playAgain;
         int order;
         int firstPuzzleCoordinateX;
         int firstPuzzleCoordinateY;
@@ -20,7 +23,6 @@ namespace Puzzles
             this._form = form;
             this._basePuzzlesList = baseList;
         }
-
 
         public bool Check(List<Puzzle> mixedPuzzlesList)
         {
@@ -42,9 +44,18 @@ namespace Puzzles
                     int puzzleMiddleY = _basePuzzlesList[i].CoordinateY + firstPuzzleCoordinateY + _basePuzzlesList[i].Height / 2;
 
                     Puzzle searchablePuzzle = _form.GetChildAtPoint(new Point(puzzleMiddleX, puzzleMiddleY)) as Puzzle;
+                    if (searchablePuzzle != null && searchablePuzzle.Size.Width == 10 && searchablePuzzle.Size.Height == 10)
+                    {
+                        Puzzle puzzleBehindSmall = controls
+                         .Where(x => x.GetType() == typeof(Puzzle))
+                         .Cast<Puzzle>()
+                         .Where(x => x.Bounds.IntersectsWith(searchablePuzzle.Bounds) && x!=searchablePuzzle)
+                         .FirstOrDefault();
+                        searchablePuzzle = puzzleBehindSmall;
+                    }
                     if (searchablePuzzle != null)
                     {
-                        if (searchablePuzzle.ImageOrder == ++order)
+                        if (searchablePuzzle.ImageOrder == ++order && searchablePuzzle.ImageDegree==0)
                         {
                             continue;
                         }
@@ -54,7 +65,6 @@ namespace Puzzles
                             return false;
                         }
                     }
-
                     else
                     {
                         order = 0;
@@ -74,7 +84,42 @@ namespace Puzzles
             {
                 puzzle.BorderStyle = BorderStyle.FixedSingle;               
             }
+            WinnerNotes(mixedPuzzlesList);
         }
-        
+
+        private void WinnerNotes(List<Puzzle> mixedPuzzlesList)           
+        {
+            Puzzle lastXPuzzle=mixedPuzzlesList.Where(p=>mixedPuzzlesList.All(z=>z.Location.X<=p.Location.X)).First();
+            winnerLabel = new Label();
+            winnerLabel.AutoSize = true;
+            winnerLabel.Location = new Point(firstPuzzleCoordinateX + (lastXPuzzle.Location.X + lastXPuzzle.Width - firstPuzzleCoordinateX) / 2 - winnerLabel.Width / 2, 60);
+            winnerLabel.Text = "You Win";          
+            winnerLabel.Font = new Font(FontFamily.GenericSansSerif, 14);
+            winnerLabel.ForeColor = Color.Green;
+            _form.Controls.Add(winnerLabel);
+            winnerLabel.BringToFront();
+            winnerLabel.BackColor = Color.Transparent;
+            playAgain = new Label();
+
+            playAgain.AutoSize = true;
+            playAgain.Text = "Click on main picture to play again";          
+            playAgain.Location = new Point(firstPuzzleCoordinateX + (lastXPuzzle.Location.X + lastXPuzzle.Width - firstPuzzleCoordinateX) / 2 - 115, 90);            
+            playAgain.Font = new Font(FontFamily.GenericSansSerif, 10);
+            playAgain.ForeColor = Color.Maroon;
+            _form.Controls.Add(playAgain);
+            playAgain.BringToFront();
+            playAgain.BackColor = Color.Transparent;
+        }
+        public void Dispose()
+        {
+            if (winnerLabel != null)
+            {
+                winnerLabel.Dispose();
+            }
+            if (playAgain != null)
+            {
+                playAgain.Dispose();
+            }
+        }
     }
 }

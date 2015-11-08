@@ -5,6 +5,7 @@ using System.Text;
 using Utilits;
 using System.Windows.Forms;
 using System.Drawing;
+using Core;
 
 namespace Puzzles
 {
@@ -21,33 +22,27 @@ namespace Puzzles
             this._form = form;
         }
 
-
         public void SetConnection()
         {
             for (int i = 0; i < _puzzles.Count; i++)
             {
-                SetTopPuzzle(_puzzles[i]);
-               
+                SetTopPuzzle(_puzzles[i]);               
             }
             for (int i = 0; i < _puzzles.Count; i++)
             {
                 SetBottomPuzzle(_puzzles[i]);
-
             }
             for (int i = 0; i < _puzzles.Count; i++)
             {
                 SetRightPuzzle(_puzzles[i]);
-
             }
             for (int i = 0; i < _puzzles.Count; i++)
             {
                 SetLeftPuzzle(_puzzles[i]);
-
-            }
-            
+            }            
         }
 
-        public void SetLeftPuzzle(Puzzle puzzle)
+        private void SetLeftPuzzle(Puzzle puzzle)
         {
             List<Puzzle> intersectedPuzzles = _puzzles.Select(x => x.rightPuzzle)
                 .Where(x => x.Bounds.IntersectsWith(puzzle.Bounds) && x != puzzle && x.Location.X != 0 && x.Location.Y != 0)
@@ -61,15 +56,14 @@ namespace Puzzles
                     leftPuzzle.Size = new Size(10, 10);
                     leftPuzzle.CoordinateX = intersectedPuzzles[i].Location.X;
                     leftPuzzle.CoordinateY = intersectedPuzzles[i].Location.Y - puzzle.Location.Y;
-                    setSmallPuzzle.SetLeftPuzzleLocation(puzzle);
-                    leftPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");                   
+                    setSmallPuzzle.SetLeftPuzzleLocation(puzzle);                                 
                     _form.Controls.Add(leftPuzzle);
                     puzzle.leftPuzzle.Add(leftPuzzle);
                 }
             }        
         }
 
-        public void SetBottomPuzzle(Puzzle puzzle)
+        private void SetBottomPuzzle(Puzzle puzzle)
         {
             var controls = _form.Controls.Cast<Control>();
             List<Puzzle> intersectedPuzzles = controls
@@ -86,8 +80,7 @@ namespace Puzzles
                     bottomPuzzle.Size = new Size(10, 10);
                     bottomPuzzle.CoordinateX = intersectedPuzzles[i].Location.X - puzzle.Location.X;
                     bottomPuzzle.CoordinateY = intersectedPuzzles[i].Location.Y;
-                    setSmallPuzzle.SetBottomPuzzleLocation(puzzle);
-                    bottomPuzzle.Image = Image.FromFile(@"..\..\Resources\Background.bmp");                   
+                    setSmallPuzzle.SetBottomPuzzleLocation(puzzle);                                    
                     _form.Controls.Add(bottomPuzzle);
                     puzzle.bottomPuzzle.Add(bottomPuzzle);
                 }
@@ -97,14 +90,13 @@ namespace Puzzles
         private void SetRightPuzzle(Puzzle puzzle)
         {
             puzzle.rightPuzzle = new Puzzle();
-            if (puzzle.CoordinateX + puzzle.Width < _picture.Width)
+            if (puzzle.CoordinateX + puzzle.Width < _picture.Width-3)
             {
                 puzzle.rightPuzzle.Size = new Size(10, 10);
                 setSmallPuzzle.SetRightPuzzleLocation(puzzle);
                 puzzle.rightPuzzle.Image =GetPartOfImage(new Rectangle(puzzle.CoordinateX + puzzle.Width, puzzle.CoordinateY + puzzle.Height / 2 - 5, 10, 10));          
                 _form.Controls.Add(puzzle.rightPuzzle);
-            }
-        
+            }        
         }
 
         private void SetTopPuzzle(Puzzle puzzle)

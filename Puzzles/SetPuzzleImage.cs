@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using Utilits;
 using System.Drawing;
+using Core;
 
 namespace Puzzles
 {
